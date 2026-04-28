@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style.css">
+    <title>Dashboard | <%= bankConfig.bankName %></title>
+    <style>
+        :root {
+            --primary: <%= bankConfig.primaryColor %>;
+            --secondary: <%= bankConfig.secondaryColor %>;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><%= bankConfig.bankName %></div>
+        <nav>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <div class="container dashboard-container">
+        <h2>Welcome, <%= user.name %>!</h2>
+
+        <!-- Balance Card -->
+        <div class="card">
+            <h3>Account Summary</h3>
+            <p>Account Number: <strong><%= user.accNum %></strong></p>
+            <div class="balance-label">Available Balance</div>
+            <div class="balance-amount">$<%= user.balance.toLocaleString() %></div>
+        </div>
+
+        <!-- Cards Issued -->
+        <div class="card">
+            <h3>Your Cards</h3>
+            <% if (user.cards && user.cards.length > 0) { %>
+                <% user.cards.forEach(function(card) { %>
+                    <div class="item-row">
+                        <div>
+                            <strong><%= card.type %></strong><br>
+                            <small><%= card.number %> | Expires: <%= card.expiry %></small>
+                        </div>
+                        <span class="status <%= card.status.toLowerCase() %>"><%= card.status %></span>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No cards issued.</p>
+            <% } %>
+        </div>
+
+        <!-- Fixed Deposits -->
+        <div class="card">
+            <h3>Fixed Deposits</h3>
+            <% if (user.fds && user.fds.length > 0) { %>
+                <% user.fds.forEach(function(fd) { %>
+                    <div class="item-row">
+                        <div>
+                            <strong>$<%= fd.amount.toLocaleString() %></strong><br>
+                            <small>Interest: <%= fd.interestRate %>% | Maturity: <%= fd.maturityDate %></small>
+                        </div>
+                        <span class="status <%= fd.status.toLowerCase() %>"><%= fd.status %></span>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No fixed deposits.</p>
+            <% } %>
+        </div>
+
+        <!-- Investments -->
+        <div class="card">
+            <h3>Investments</h3>
+            <% if (user.investments && user.investments.length > 0) { %>
+                <% user.investments.forEach(function(inv) { %>
+                    <div class="item-row">
+                        <div>
+                            <strong><%= inv.type %></strong><br>
+                            <small>Invested: $<%= inv.amount.toLocaleString() %> | Current: $<%= inv.currentValue.toLocaleString() %></small>
+                        </div>
+                        <span class="profit"><%= ((inv.currentValue - inv.amount) / inv.amount * 100).toFixed(1) %>%</span>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No investments.</p>
+            <% } %>
+        </div>
+
+        <!-- Loans Pending -->
+        <div class="card">
+            <h3>Loans</h3>
+            <% if (user.loans && user.loans.length > 0) { %>
+                <% user.loans.forEach(function(loan) { %>
+                    <div class="item-row">
+                        <div>
+                            <strong><%= loan.type %></strong><br>
+                            <small>Amount: $<%= loan.amount.toLocaleString() %> | EMI: $<%= loan.emi %> | Pending: $<%= loan.pending.toLocaleString() %></small>
+                        </div>
+                        <span class="status <%= loan.status.toLowerCase() %>"><%= loan.status %></span>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No active loans.</p>
+            <% } %>
+        </div>
+
+        <!-- Loan Application -->
+        <div class="card">
+            <h3>Apply for a Loan</h3>
+            <form action="/apply-loan" method="POST">
+                <input type="number" name="amount" placeholder="Loan Amount" required>
+                <select name="type">
+                    <option value="personal">Personal</option>
+                    <option value="auto">Auto</option>
+                    <option value="home">Home</option>
+                </select>
+                <button type="submit" class="btn-primary">Submit Loan Application</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p><%= bankConfig.footerText %></p>
+    </footer>
+</body>
+</html>

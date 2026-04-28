@@ -1,0 +1,21 @@
+{
+  "bankName": "SimpleBank",
+  "tagline": "Your Trusted Banking Partner",
+  "primaryColor": "#1a237e",
+  "secondaryColor": "#2e7d32",
+  "services": [
+    "Savings Accounts",
+    "Personal Loans",
+    "Fixed Deposits",
+    "Credit Cards",
+    "Wealth Management"
+  ],
+  "products": [
+    "Savings Account",
+    "Current Account",
+    "Platinum Credit Card",
+    "Debit Card",
+    "Fixed Deposit"
+  ],
+  "footerText": "© 2026 SimpleBank. All rights reserved."
+}
